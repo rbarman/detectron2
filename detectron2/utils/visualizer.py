@@ -351,7 +351,7 @@ class Visualizer:
         )
         self._instance_mode = instance_mode
 
-    def draw_instance_predictions(self, predictions):
+    def draw_instance_predictions(self, predictions, draw_config=None):
         """
         Draw instance-level prediction results on an image.
 
@@ -359,6 +359,8 @@ class Visualizer:
             predictions (Instances): the output of an instance detection/segmentation
                 model. Following fields will be used to draw:
                 "pred_boxes", "pred_classes", "scores", "pred_masks" (or "pred_masks_rle").
+                
+            draw_config (Dictionary): dictionary with configurations for downstream drawing functions.
 
         Returns:
             output (VisImage): image object with visualizations.
@@ -397,6 +399,7 @@ class Visualizer:
             keypoints=keypoints,
             assigned_colors=colors,
             alpha=alpha,
+            draw_config = draw_config
         )
         return self.output
 
@@ -554,7 +557,8 @@ class Visualizer:
         masks=None,
         keypoints=None,
         assigned_colors=None,
-        alpha=0.5
+        alpha=0.5,
+        draw_config=None
     ):
         """
         Args:
@@ -581,7 +585,9 @@ class Visualizer:
             assigned_colors (list[matplotlib.colors]): a list of colors, where each color
                 corresponds to each mask or box in the image. Refer to 'matplotlib.colors'
                 for full list of formats that the colors are accepted in.
-
+            draw_config (Dictionary): dictionary of drawing configs that end users sets 
+                and impacts downstream drawing functions
+            
         Returns:
             output (VisImage): image object with visualizations.
         """
@@ -635,7 +641,7 @@ class Visualizer:
 
             if masks is not None:
                 for segment in masks[i].polygons:
-                    self.draw_polygon(segment.reshape(-1, 2), color, alpha=alpha)
+                    self.draw_polygon(segment.reshape(-1, 2), color, alpha=alpha,draw_config)
 
             if labels is not None:
                 # first get a box
@@ -1029,7 +1035,7 @@ class Visualizer:
                     self.draw_text(text, center, color=lighter_color)
         return self.output
 
-    def draw_polygon(self, segment, color, edge_color=None, alpha=0.5):
+    def draw_polygon(self, segment, color, edge_color=None, alpha=0.5, draw_config=None):
         """
         Args:
             segment: numpy array of shape Nx2, containing all the points in the polygon.
@@ -1053,7 +1059,7 @@ class Visualizer:
 
         polygon = mpl.patches.Polygon(
             segment,
-            fill=False,
+            fill=draw_config['fill'],
             facecolor=mplc.to_rgb(color) + (alpha,),
             edgecolor=edge_color,
             linewidth=max(self._default_font_size // 15 * self.output.scale, 1),
