@@ -1053,7 +1053,7 @@ class Visualizer:
 
         polygon = mpl.patches.Polygon(
             segment,
-            fill=True,
+            fill=False,
             facecolor=mplc.to_rgb(color) + (alpha,),
             edgecolor=edge_color,
             linewidth=max(self._default_font_size // 15 * self.output.scale, 1),
