@@ -1058,13 +1058,13 @@ class Visualizer:
         edge_color = mplc.to_rgb(edge_color) + (1,)
         
         print(draw_config)
-        print(draw_config['fill'])
         polygon = mpl.patches.Polygon(
             segment,
             fill=draw_config['fill'],
             facecolor=mplc.to_rgb(color) + (alpha,),
             edgecolor=edge_color,
-            linewidth=max(self._default_font_size // 15 * self.output.scale, 1),
+            linewidth=draw_config['linewidth']
+            #linewidth=max(self._default_font_size // 15 * self.output.scale, 1),
         )
         self.output.ax.add_patch(polygon)
         return self.output
