@@ -641,7 +641,7 @@ class Visualizer:
 
             if masks is not None:
                 for segment in masks[i].polygons:
-                    self.draw_polygon(segment.reshape(-1, 2), color, alpha=alpha,draw_config)
+                    self.draw_polygon(segment.reshape(-1, 2), color, alpha=alpha,draw_config=draw_config)
 
             if labels is not None:
                 # first get a box
