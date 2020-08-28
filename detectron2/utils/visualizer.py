@@ -1056,7 +1056,9 @@ class Visualizer:
             else:
                 edge_color = color
         edge_color = mplc.to_rgb(edge_color) + (1,)
-
+        
+        print(draw_config)
+        print(draw_config['fill'])
         polygon = mpl.patches.Polygon(
             segment,
             fill=draw_config['fill'],
