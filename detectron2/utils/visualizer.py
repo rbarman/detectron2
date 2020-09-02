@@ -1056,7 +1056,11 @@ class Visualizer:
             else:
                 edge_color = color
         edge_color = mplc.to_rgb(edge_color) + (1,)
-        
+        try:
+            edge_color = draw_config['edge_color']
+        except:
+            pass
+        # TODO: should use have try catch block when using draw_config attributes
         print(draw_config)
         polygon = mpl.patches.Polygon(
             segment,
